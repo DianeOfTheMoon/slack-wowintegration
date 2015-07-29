@@ -28,13 +28,17 @@ app.post('/item', bodyParser.urlencoded({extended: false}), function(req, resp) 
 	console.log('Item search occurred');
 	console.log(req.body);
 	var respChannel = "#" + req.body.channel_name;
-	var username = "world_of_warcraft";
 
 
 	item_search(req.body.text, function(error, response) {
 		//Find the item
 		if (response.length > 1) {
 			//If there's more than one, ask for more details
+			var more_results = "More than one result found, please refine search:";
+			for (item_id in response) {
+				more_results += response[item_id].name + " ilvl:" + response[item_id].level;
+			}
+			resp.send(more_results);
 		} else {
 			var cur_item = response[Object.keys(response)[0]];
 			var req_url = '/' + cur_item.id;
@@ -45,7 +49,6 @@ app.post('/item', bodyParser.urlencoded({extended: false}), function(req, resp) 
 				//If not, use webhook to respond
 				var params = {
 					channel: respChannel,
-					username: username,
 					text: cur_item.name,
 					icon_url: cur_item.icon_url
 				};
