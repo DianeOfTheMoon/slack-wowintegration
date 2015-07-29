@@ -35,7 +35,7 @@ app.post('/item', bodyParser.urlencoded({extended: false}), function(req, resp) 
 			var more_results = "More than one result found: ";
 
 			for (item_id in response) {
-				more_results += " " + response[item_id].name + " --id=" + response[item_id].id + " |";
+				more_results += "\n `" + response[item_id].name + " --id=" + response[item_id].id + "` |";
 			}
 
 			resp.send(more_results);
@@ -63,7 +63,7 @@ app.post('/item', bodyParser.urlencoded({extended: false}), function(req, resp) 
 					text: cur_item.name,
 					icon_url: cur_item.icon_url
 				};
-				
+
 				slack.webhook(params, function(err, response) {
 					if (err) {
 						logger.info("Unable to use webhook", response);
