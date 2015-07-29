@@ -1,10 +1,11 @@
 var request = require('request');
 var cheerio = require('cheerio');
+var logger = require('winston');
 
 module.exports = function(search_term, callback) {
 	var search_options = parse_options(search_term);
 	search_term = remove_options(search_term);
-	console.log(search_term);
+	logger.debug("Searching for: " + search_term);
 	var url = 'https://us.battle.net/wow/en/search?f=wowitem&q=' + encodeURIComponent(search_term);
 
 	request(url, function(error, response, html) {
@@ -54,6 +55,8 @@ module.exports = function(search_term, callback) {
 					}
 				}); 
 			});
+			logger.silly(search_results);
+			logger.debug(Object.keys(search_results).length + " records found");
 			callback(null, search_results);
 		} else {
 			callback(error, response);
@@ -70,22 +73,18 @@ function parse_options(search_string) {
 	}
 
 	raw_options.forEach(function(raw_opt) {
-		console.log(raw_opt);
 		if (raw_opt === '--normal' || raw_opt === '--raid-normal') {
-			console.log('option for normal raid tier found.');
 			options.tier = 'raid-normal';
 		} else if (raw_opt === '--heroic' || raw_opt === '--raid-heroic') {
-			console.log('option for heroic raid tier found.');
 			options.tier = 'raid-heroic';
 		} else if (raw_opt === '--mythic' || raw_opt === '--raid-mythic') {
-			console.log('option for mythic raid tier found.');
 			options.tier = 'raid-mythic';
 		} else if (raw_opt.slice(0, 5) === "--id=") {
 			options.id = raw_opt.substr(5);
 		}
 	});
 
-	console.log(options);
+	logger.debug(options);
 	return options;
 }
 
