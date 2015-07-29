@@ -4,11 +4,12 @@
   "description": "Slack Integration to display a wow item",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.13.2",
     "cheerio": "^0.19.0",
     "express": "^4.13.1",
     "request": "^2.60.0",
@@ -16,8 +17,5 @@
   },
   "engines": {
     "node": "0.12.x"
-  },
-  "scripts": {
-    "start": "node index.js"
   }
 }

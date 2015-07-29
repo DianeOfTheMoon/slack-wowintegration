@@ -1,6 +1,12 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var app = express();
 var Slack = require('slack-node');
+var request = require('request').defaults({
+	baseUrl: 'https://us.api.battle.net/wow/item/',
+	qs: {apikey: process.env.APIKEY}
+});
+
 var item_search = require('./wow-item-search');
 
 slack = new Slack();
@@ -18,10 +24,10 @@ app.get('/search', function (req, resp) {
 	});
 });
 
-app.post('/item', function(req, resp) {
+app.post('/item', bodyParser.urlencoded({extended: false}), function(req, resp) {
 	console.log('Item search occurred');
-	var results = 2;
-	var respChannel = "";
+	console.log(req.body);
+	var respChannel = "#" + req.body.channel_name;
 	var username = "world_of_warcraft";
 
 
@@ -30,19 +36,30 @@ app.post('/item', function(req, resp) {
 		if (response.length > 1) {
 			//If there's more than one, ask for more details
 		} else {
-			//If not, use webhook to respond
-			slack.webhook({
-				channel: respChannel,
-				username: username,
-				text: "WoW Item!"
-			}, function(err, response) {
-				if (err) {
-					// Error in webhook send
-					resp.send(response);
-				} else {
-					// Successfully sent webhook command
-					resp.send("");
-				}
+			var cur_item = response[Object.keys(response)[0]];
+			var req_url = '/' + cur_item.id;
+			if (cur_item.tier) {
+				req_url = req_url + '/' + cur_item.tier;
+			}
+			request(req_url, function(api_err, api_resp, api_body) {
+				//If not, use webhook to respond
+				var params = {
+					channel: respChannel,
+					username: username,
+					text: cur_item.name,
+					icon_url: cur_item.icon_url
+				};
+				console.log(params);
+
+				slack.webhook(params, function(err, response) {
+					if (err) {
+						// Error in webhook send
+						resp.send(response);
+					} else {
+						// Successfully sent webhook command
+						resp.send("");
+					}
+				});
 			});
 		}
 	});

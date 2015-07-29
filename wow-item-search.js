@@ -24,7 +24,7 @@ module.exports = function(search_term, callback) {
 					search_record.name = a_tag.children('strong').text().trim().replace(/\r?\n|\r/g, '');
 					search_record.id = item_url_segments[4];
 					search_record.tier = (item_url_segments.length == 6) ? item_url_segments[5] : "";
-					search_record.icon_link = a_tag.children('span').css('background-image').replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+					search_record.icon_url = a_tag.children('span').css('background-image').replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
 					td = row.find("td:nth-child(2)");
 
 					search_record.level = td.text().trim();
