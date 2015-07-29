@@ -34,9 +34,13 @@ app.post('/item', bodyParser.urlencoded({extended: false}), function(req, resp) 
 		//Find the item
 		if (Object.keys(response).length > 1) {
 			//If there's more than one, ask for more details
-			var more_results = "More than one result found, please refine search:";
+			var more_results = "More than one result found: ";
 			for (item_id in response) {
-				more_results += response[item_id].name + " ilvl:" + response[item_id].level;
+				more_results += " " + response[item_id].name;
+				if (response[item_id].tier != "") {
+					more_results += " --" + response[item_id].tier;
+				}
+				more_results += " |<br />";
 			}
 			resp.send(more_results);
 		} else {
@@ -60,7 +64,7 @@ app.post('/item', bodyParser.urlencoded({extended: false}), function(req, resp) 
 						resp.send(response);
 					} else {
 						// Successfully sent webhook command
-						resp.send("");
+						resp.send("Linking item...");
 					}
 				});
 			});
