@@ -32,7 +32,7 @@ app.post('/item', bodyParser.urlencoded({extended: false}), function(req, resp) 
 
 	item_search(req.body.text, function(error, response) {
 		//Find the item
-		if (response.length > 1) {
+		if (Object.keys(response).length > 1) {
 			//If there's more than one, ask for more details
 			var more_results = "More than one result found, please refine search:";
 			for (item_id in response) {
