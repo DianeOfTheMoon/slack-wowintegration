@@ -45,6 +45,9 @@ module.exports = function(search_term, callback) {
 					if (!search_options.tier && search_record.tier && search_record.tier != 'raid-normal') {
 						shouldAdd = false;
 					}
+					if (search_options.id && search_record.id != search_options.id) {
+						shouldAdd = false;
+					}
 
 					if (shouldAdd) {
 						search_results[search_record.id] = search_record;
@@ -68,15 +71,17 @@ function parse_options(search_string) {
 
 	raw_options.forEach(function(raw_opt) {
 		console.log(raw_opt);
-		if (raw_opt == '--normal' || raw_opt == '--raid-normal') {
+		if (raw_opt === '--normal' || raw_opt === '--raid-normal') {
 			console.log('option for normal raid tier found.');
 			options.tier = 'raid-normal';
-		} else if (raw_opt == '--heroic' || raw_opt == '--raid-heroic') {
+		} else if (raw_opt === '--heroic' || raw_opt === '--raid-heroic') {
 			console.log('option for heroic raid tier found.');
 			options.tier = 'raid-heroic';
-		} else if (raw_opt == '--mythic' || raw_opt == '--raid-mythic') {
+		} else if (raw_opt === '--mythic' || raw_opt === '--raid-mythic') {
 			console.log('option for mythic raid tier found.');
 			options.tier = 'raid-mythic';
+		} else if (raw_opt.slice(0, 5) === "--id=") {
+			options.id = raw_opt.substr(5);
 		}
 	});
 

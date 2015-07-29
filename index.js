@@ -36,13 +36,11 @@ app.post('/item', bodyParser.urlencoded({extended: false}), function(req, resp) 
 			//If there's more than one, ask for more details
 			var more_results = "More than one result found: ";
 			for (item_id in response) {
-				more_results += " " + response[item_id].name;
-				if (response[item_id].tier != "") {
-					more_results += " --" + response[item_id].tier;
-				}
-				more_results += " |";
+				more_results += " " + response[item_id].name + " --id=" + response[item_id].id + " |";
 			}
 			resp.send(more_results);
+		} else if (Object.keys(response).length == 0) {
+			resp.send("Unable to find an item with `" + req.body.text + "`");
 		} else {
 			var cur_item = response[Object.keys(response)[0]];
 			var req_url = '/' + cur_item.id;
