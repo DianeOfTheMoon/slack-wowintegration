@@ -32,10 +32,10 @@ app.post('/item', bodyParser.urlencoded({extended: false}), function(req, resp) 
 		if (Object.keys(response).length > 1) {
 			logger.debug("More than one result found, returning directly");
 			//If there's more than one, ask for more details
-			var more_results = "More than one result found: ";
+			var more_results = "More than one result found:\n";
 
 			for (item_id in response) {
-				more_results += "\n `" + response[item_id].name + " --id=" + response[item_id].id + "` |";
+				more_results += "`" + req.body.command + " " + response[item_id].name + " --id=" + response[item_id].id + "`\n";
 			}
 
 			resp.send(more_results);
