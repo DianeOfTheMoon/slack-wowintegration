@@ -56,23 +56,24 @@ app.post('/item', bodyParser.urlencoded({extended: false}), function(req, resp) 
 				if (api_err) {
 					logger.info("Error response from wow api", api_resp);
 					resp.send("I'm unable to look that item up right now.");
-				}
-				//If not, use webhook to respond
-				var params = {
-					channel: respChannel,
-					text: cur_item.name,
-					icon_url: cur_item.icon_url
-				};
+				} else {
+					//If not, use webhook to respond
+					var params = {
+						channel: respChannel,
+						text: cur_item.name,
+						icon_url: cur_item.icon_url
+					};
 
-				slack.webhook(params, function(err, response) {
-					if (err) {
-						logger.info("Unable to use webhook", response);
-						resp.send("Slack won't let me link the item for you.");
-					} else {
-						logger.debug("Sent webhook result");
-						resp.send("Linking item...");
-					}
-				});
+					slack.webhook(params, function(err, response) {
+						if (err) {
+							logger.info("Unable to use webhook", response);
+							resp.send("Slack won't let me link the item for you.");
+						} else {
+							logger.debug("Sent webhook result");
+							resp.send("Linking item...");
+						}
+					});
+				}
 			});
 		}
 	});
