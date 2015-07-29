@@ -1,80 +1,45 @@
 var express = require('express');
-var bodyParser = require('body-parser');
 var app = express();
+var bodyParser = require('body-parser');
+
 var Slack = require('slack-node');
-var logger = require('winston');
-logger.level = process.env.LOG_LEVEL || 'debug';
-
-var request = require('request').defaults({
-	baseUrl: 'https://us.api.battle.net/wow/item/',
-	qs: {apikey: process.env.APIKEY}
-});
-
-var item_search = require('./wow-item-search');
-
 slack = new Slack();
 slack.setWebhook(process.env.WEBHOOK || "__hook_not_defined__");
 
+var logger = require('winston');
+logger.level = process.env.LOG_LEVEL || 'debug';
+
+var search_parse_middleware = require('./middleware/search-parse');
+var wow_search_middleware = require('./middleware/wow-site-search');
+var wow_api_item_middleware = require('./middleware/wow-api-item');
+
 app.set('port', (process.env.PORT || 5000));
+
+app.use('/item', bodyParser.urlencoded({extended: false}));
+app.use('/item', search_parse_middleware);
+app.use('/item', wow_search_middleware);
+app.use('/item', wow_api_item_middleware);
 
 app.get('/', function (req, resp) {
 	resp.send('Hello World');
 });
 
-app.post('/item', bodyParser.urlencoded({extended: false}), function(req, resp) {
-	logger.debug('Item search occurred');
-	logger.debug(req.body);
+app.post('/item', function(req, resp) {
+	logger.debug('Item search occurred, link is ' + req.wowItem.webUrl);
 	var respChannel = "#" + req.body.channel_name;
 
+	var params = {
+		channel: respChannel,
+		text: "<" + req.wowItem.webUrl + "|" + req.wowItem.name + ">"
+	};
 
-	item_search(req.body.text, function(error, response) {
-		//Find the item
-		if (Object.keys(response).length > 1) {
-			logger.debug("More than one result found, returning directly");
-			//If there's more than one, ask for more details
-			var more_results = "More than one result found:\n";
-
-			for (item_id in response) {
-				more_results += "`" + req.body.command + " " + response[item_id].name + " --id=" + response[item_id].id + "`\n";
-			}
-
-			resp.send(more_results);
-
-		} else if (Object.keys(response).length == 0) {
-			logger.debug("No results found, asking for a better search");
-			resp.send("Unable to find an item with `" + req.body.text + "`");
-
+	slack.webhook(params, function(err, response) {
+		if (err) {
+			logger.info("Unable to use webhook", response);
+			resp.send("Slack won't let me link the item for you.");
 		} else {
-			var cur_item = response[Object.keys(response)[0]];
-			var req_url = '/' + cur_item.id;
-
-			if (cur_item.tier) {
-				req_url = req_url + '/' + cur_item.tier;
-			}
-
-			request(req_url, function(api_err, api_resp, api_body) {
-				if (api_err) {
-					logger.info("Error response from wow api", api_resp);
-					resp.send("I'm unable to look that item up right now.");
-				} else {
-					//If not, use webhook to respond
-					var params = {
-						channel: respChannel,
-						text: cur_item.name,
-						icon_url: cur_item.icon_url
-					};
-
-					slack.webhook(params, function(err, response) {
-						if (err) {
-							logger.info("Unable to use webhook", response);
-							resp.send("Slack won't let me link the item for you.");
-						} else {
-							logger.debug("Sent webhook result");
-							resp.send("Linking item...");
-						}
-					});
-				}
-			});
+			logger.debug("Sent webhook result");
+			resp.send("Linking " + req.wowItem.name + "...");
 		}
 	});
 });
