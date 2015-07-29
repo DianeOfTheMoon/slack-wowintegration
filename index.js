@@ -40,7 +40,7 @@ app.post('/item', bodyParser.urlencoded({extended: false}), function(req, resp) 
 				if (response[item_id].tier != "") {
 					more_results += " --" + response[item_id].tier;
 				}
-				more_results += " |<br />";
+				more_results += " |";
 			}
 			resp.send(more_results);
 		} else {
