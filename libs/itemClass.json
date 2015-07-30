@@ -1,0 +1,227 @@
+[
+    {
+        "id": 0,
+        "name": "Consumable",
+        "subClass": [
+            "Consumable",
+            "Potion",
+            "Elixir",
+            "Flask",
+            "Scroll",
+            "Food & Drink",
+            "Item Enhancement",
+            "Bandage",
+            "Other"
+        ]
+    },
+    {
+        "id": 1,
+        "name": "Container",
+        "subClass": [
+            "Bag",
+            "Soul Bag",
+            "Herb Bag",
+            "Enchanting Bag",
+            "Engineering Bag",
+            "Gem Bag",
+            "Mining Bag",
+            "Leatherworking Bag",
+            "Inscription Bag",
+            "Tackle Box"
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Weapon",
+        "subClass": [
+            "One-Handed Axe",
+            "Two-Handed Axe",
+            "Bow",
+            "Gun",
+            "One-Handed Mace",
+            "Two-Handed Mace",
+            "Polearm",
+            "One-Handed Sword",
+            "Two-Handed Sword",
+            "Obsolete",
+            "Staff",
+            "One-Handed Exotic",
+            "Two-Handed Exotic",
+            "Fist Weapon",
+            "Miscellaneous",
+            "Dagger",
+            "Thrown",
+            "Spear",
+            "Crossbow",
+            "Wand",
+            "Fishing Pole"
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Gem",
+        "subClass": [
+            "Red",
+            "Blue",
+            "Yellow",
+            "Purple",
+            "Green",
+            "Orange",
+            "Meta",
+            "Simple",
+            "Prismatic",
+            "Hydraulic",
+            "Cogwheel"
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Armor",
+        "subClass": [
+            "Miscellaneous",
+            "Cloth",
+            "Leather",
+            "Mail",
+            "Plate",
+            "Buckler",
+            "Shield",
+            "Libram",
+            "Idol",
+            "Totem",
+            "Sigil",
+            "Relic"
+        ]
+    },
+    {
+        "id": 5,
+        "name": "Reagent",
+        "subClass": [
+            "Reagent"
+        ]
+    },
+    {
+        "id": 6,
+        "name": "Projectile",
+        "subClass": [
+            "Wand",
+            "Bolt",
+            "Arrow",
+            "Bullet",
+            "Thrown"
+        ]
+    },
+    {
+        "id": 7,
+        "name": "Trade Good",
+        "subClass": [
+            "Trade Good",
+            "Part",
+            "Explosive",
+            "Device",
+            "Jewelcrafting",
+            "Cloth",
+            "Leather",
+            "Metal & Stone",
+            "Meat",
+            "Herb",
+            "Elemental",
+            "Other",
+            "Enchanting",
+            "Material",
+            "Item Enchantment",
+            "Weapon Enchantment"
+        ]
+    },
+    {
+        "id": 8,
+        "name": "Generic",
+        "subClass": [
+            "Generic"
+        ]
+    },
+    {
+        "id": 9,
+        "name": "Book",
+        "subClass": [
+            "Book",
+            "Leatherworking",
+            "Tailoring",
+            "Engineering",
+            "Blacksmithing",
+            "Cooking",
+            "Alchemy",
+            "First Aid",
+            "Enchanting",
+            "Fishing",
+            "Jewelcrafting",
+            "Inscription"
+        ]
+    },
+    {
+        "id": 10,
+        "name": "Money",
+        "subClass": [
+            "Money"
+        ]
+    },
+    {
+        "id": 11,
+        "name": "Quiver",
+        "subClass": [
+            "Quiver",
+            "Quiver",
+            "Quiver",
+            "Ammo Pouch"
+        ]
+    },
+    {
+        "id": 12,
+        "name": "Quest",
+        "subClass": [
+            "Quest"
+        ]
+    },
+    {
+        "id": 13,
+        "name": "Key",
+        "subClass": [
+            "Key",
+            "Lockpick"
+        ]
+    },
+    {
+        "id": 14,
+        "name": "Permanent",
+        "subClass": [
+            "Permanent"
+        ]
+    },
+    {
+        "id": 15,
+        "name": "Junk",
+        "subClass": [
+            "Junk",
+            "Reagent",
+            "Pet",
+            "Holiday",
+            "Other",
+            "Mount"
+        ]
+    },
+    {
+        "id": 16,
+        "name": "Glyph",
+        "subClass": [
+            "Warrior",
+            "Paladin",
+            "Hunter",
+            "Rogue",
+            "Priest",
+            "Death Knight",
+            "Shaman",
+            "Mage",
+            "Warlock",
+            "Druid"
+        ]
+    }
+]

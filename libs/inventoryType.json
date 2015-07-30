@@ -1,0 +1,114 @@
+[
+    {
+      "id": 0,
+      "name": "None"
+    },
+    {
+      "id": 1,
+      "name": "Head"
+    },
+    {
+      "id": 2,
+      "name": "Neck"
+    },
+    {
+      "id": 3,
+      "name": "Shoulder"
+    },
+    {
+      "id": 4,
+      "name": "Shirt"
+    },
+    {
+      "id": 5,
+      "name": "Chest"
+    },
+    {
+      "id": 6,
+      "name": "Waist"
+    },
+    {
+      "id": 7,
+      "name": "Legs"
+    },
+    {
+      "id": 8,
+      "name": "Feet"
+    },
+    {
+      "id": 9,
+      "name": "Wrist"
+    },
+    {
+      "id": 10,
+      "name": "Hands"
+    },
+    {
+      "id": 11,
+      "name": "Finger"
+    },
+    {
+      "id": 12,
+      "name": "Trinket"
+    },
+    {
+      "id": 13,
+      "name": "One-Hand"
+    },
+    {
+      "id": 14,
+      "name": "Shield"
+    },
+    {
+      "id": 15,
+      "name": "Ranged"
+    },
+    {
+      "id": 16,
+      "name": "Cloak"
+    },
+    {
+      "id": 17,
+      "name": "Two-Hand"
+    },
+    {
+      "id": 18,
+      "name": "Bag"
+    },
+    {
+      "id": 19,
+      "name": "Tabard"
+    },
+    {
+      "id": 20,
+      "name": "Robe"
+    },
+    {
+      "id": 21,
+      "name": "Main Hand"
+    },
+    {
+      "id": 22,
+      "name": "Off Hand"
+    },
+    {
+      "id": 23,
+      "name": "Held In Off-hand"
+    },
+    {
+      "id": 24,
+      "name": "Ammo"
+    },
+    {
+      "id": 25,
+      "name": "Thrown"
+    },
+    {
+      "id": 26,
+      "name": "Ranged Right"
+    },
+    {
+      "id": 28,
+      "name": "Relic"
+    }
+]

@@ -1,0 +1,52 @@
+[
+    {
+        "id": 0,
+        "name": "Poor",
+        "color": "#9D9D9D"
+    },
+    {
+        "id": 1,
+        "name": "Common",
+        "color": "#FFFFFF"
+    },
+    {
+        "id": 2,
+        "name": "Uncommon",
+        "color": "#1EFF00"
+    },
+    {
+        "id": 3,
+        "name": "Rare",
+        "color": "#0070DD"
+    },
+    {
+        "id": 4,
+        "name": "Epic",
+        "color": "#A335EE"
+    },
+    {
+        "id": 5,
+        "name": "Legendary",
+        "color": "#FF8000"
+    },
+    {
+        "id": 6,
+        "name": "Artifact",
+        "color": "#E5CC80"
+    },
+    {
+        "id": 7,
+        "name": "Heirloom",
+        "color": "#E5CC80"
+    },
+    {
+        "id": 8,
+        "name": "Quality 8",
+        "color": "#FFFF98"
+    },
+    {
+        "id": 9,
+        "name": "Quality 9",
+        "color": "#71D5FF"
+   }
+]

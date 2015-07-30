@@ -1,6 +1,11 @@
 var request = require('request');
 var logger = require('winston');
 
+var bonusStats = require('./libs/bonusStats.json');
+var inventoryType = require('./libs/inventoryType.json');
+var itemClass = require('./libs/itemClass.json');
+var quality = require('./libs/quality.json');
+
 module.exports = function (wowItem, respChannel) {
     var imageURL = 'http://media.blizzard.com/wow/icons/56/';
     
@@ -11,49 +16,31 @@ module.exports = function (wowItem, respChannel) {
     data.channel = respChannel;
     //data.text = wowItem.name;
     
-    overview.fallback = wowItem.name + wowItem.description;
-    overview.title = wowItem.name;
+    overview.fallback = wowItem.name + wowItem.description; // Fallback Text
+    overview.title = wowItem.name; // Item Name
     if (wowItem.nameDescription) {
-        overview.title += "(" + wowItem.nameDescription + ")";
+        overview.title += " (" + wowItem.nameDescription + ")";
     };
     
-    overview.title_link = wowItem.webUrl;
-    overview.thumb_url = imageURL + wowItem.icon + '.jpg';
+    overview.title_link = wowItem.webUrl; // URL
+    overview.thumb_url = imageURL + wowItem.icon + '.jpg'; // Icon
+    
+    overview.text = "";
     if (wowItem.description) {
-        overview.text = wowItem.description;
-    } else {
-        overview.text = wowItem.itemLevel;
+        overview.text += "\"" + wowItem.description + "\"\n"; // Description
     }
-
-    switch (wowItem.quality) {
-        case 1:
-            overview.color = '#ffffff';
-            break;
-        case 2:
-            overview.color = '#1eff00';
-            break;
-        case 3:
-            overview.color = '#0081ff';
-            break;
-        case 4:
-            overview.color = '#c600ff';
-            break;
-        case 5:
-            overview.color = '#ff8000';
-            break;
-        case 6:
-            overview.color = '#e5cc80';
-            break;
-        default:
-            overview.color = '#ffffff';
-            break;
-    }
+    
+    overview.text += "Item Level: " + wowItem.itemLevel; // Item Level
+    
+    // Text Line 3
+    
+    // Text Line 4
+    
+    overview.color = quality[wowItem.quality].color; // Quality Color
     
     logger.debug(wowItem);
     
     data.attachments.push(overview);
-        
-    logger.debug(data);
     
     return data;
 };
