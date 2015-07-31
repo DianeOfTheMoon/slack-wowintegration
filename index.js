@@ -41,7 +41,11 @@ app.get('/', function (req, resp) {
 
 app.post('/loot', function(req, resp) {
 	logger.debug("loot route");
-	resp.send("");
+	if (req.sendResponse) {
+		resp.send(req.sendResponse);
+	} else {
+		resp.send("");
+	}
 });
 
 app.post('/item', function(req, resp) {

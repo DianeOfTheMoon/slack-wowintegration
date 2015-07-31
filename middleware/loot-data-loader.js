@@ -35,6 +35,7 @@ module.exports = {
 	},
 	saver: function (req, resp, next) {
 		if (req.lootSave && req.lootData) {
+			logger.debug('saving data');
 			redis.set(req.lootKey, JSON.stringify(req.lootData), function (err, result) {
 				if (err) {
 					next(err);

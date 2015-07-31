@@ -33,6 +33,9 @@ module.exports = function(req, resp, next) {
 			req.lootSave = commandResult[0];
 			req.lootData = commandResult[1];
 			req.lootLogData = commandResult[2];
+			if (commandResult.length = 4) {
+				req.sendResponse = commandResult[3];
+			}
 			next();
 		}
 	} else {
@@ -75,7 +78,7 @@ var commands = {
 				admin: options.admin,
 				members: initMembers
 			};
-			return [true, newLootList, getInitLog(options, data)];
+			return [true, newLootList, getInitLog(options, data), "List initialized"];
 		},
 		commandString: "--admin=<slack_user_name>[ --admin=<slack_user_name>] <name>[ <name>[ <name>]]"
 	},
@@ -96,13 +99,18 @@ var commands = {
 			return false;
 		},
 		"execute": function(options, data) {
-			var memberName = options._[0].toLowerCase();
-			for (var i = 0; i < data.members.length; i++) {
-				if (data.members[i].name == memberName) {
-					data.members[i].status = "active";
+			var membernameList = [];
+			for (var i = 0; i < options._.length; i++) {
+				var memberName = options._[i].toLowerCase();
+				for (var j = 0; j < data.members.length; j++) {
+					if (data.members[j].name == memberName) {
+						data.members[j].status = "active";
+						membernameList.push(memberName);
+						break;
+					}
 				}
 			}
-			return [true, data, null];
+			return [true, data, null, membernameList.join(", ") + " has been activated"];
 		},
 		commandString: "<name>[ <name>[ <name>]]"
 	},
@@ -123,13 +131,18 @@ var commands = {
 			return false;
 		},
 		"execute": function(options, data) {
-			var memberName = options._[0].toLowerCase();
-			for (var i = 0; i < data.members.length; i++) {
-				if (data.members[i].name == memberName) {
-					data.members[i].status = "inactive";
+			var membernameList = [];
+			for (var i = 0; i < options._.length; i++) {
+				var memberName = options._[i].toLowerCase();
+				for (var j = 0; j < data.members.length; j++) {
+					if (data.members[j].name == memberName) {
+						data.members[j].status = "inactive";
+						membernameList.push(data.members[j].name);
+						break;
+					}
 				}
 			}
-			return [true, data, null];
+			return [true, data, null, membernameList.join(", ") + " has been deactivated."];
 		},
 		commandString: "<name>[ <name>[ <name>]]"
 	},
@@ -165,7 +178,7 @@ var commands = {
 			} else {
 				data.members.splice(getRandomInt(0, data.members.length - 1), 0, member);
 			}
-			return [true, data, getSeedLog(options, data)];
+			return [true, data, getSeedLog(options, data), "Name has been seeded"];
 		},
 		commandString: "<name>[ --first| --last| --random]"
 	},
@@ -200,7 +213,7 @@ var commands = {
 				}
 			}
 			logger.debug(data);
-			return [true, data, getClaimLog(options, data, characterName, date)];
+			return [true, data, getClaimLog(options, data, characterName, date), "Claim has been processed"];
 		},
 		commandString: "<name>[ --date=<date>][ --item=<item_id>[ --normal][ --heroic][ --mythic]]"
 	}
