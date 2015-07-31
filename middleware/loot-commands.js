@@ -1,4 +1,6 @@
 var logger = require("winston");
+var moment = require("moment");
+
 if (process.env.REDISTOGO_URL) {
 	// TODO: redistogo connection
 	var rtg   = require("url").parse(process.env.REDISTOGO_URL);
@@ -26,10 +28,11 @@ module.exports = function(req, resp, next) {
 			next("err");
 		} else {
 			logger.silly("looks valid");
+			req.lootOptions.wowItem = req.wowItem;
 			var commandResult = commands[req.lootCommand].execute(req.lootOptions, req.lootData);
 			req.lootSave = commandResult[0];
 			req.lootData = commandResult[1];
-			req.lootLog = commandResult[2];
+			req.lootLogData = commandResult[2];
 			next();
 		}
 	} else {
@@ -72,7 +75,7 @@ var commands = {
 				admin: options.admin,
 				members: initMembers
 			};
-			return [true, newLootList, null];
+			return [true, newLootList, getInitLog(options, data)];
 		},
 		commandString: "--admin=<slack_user_name>[ --admin=<slack_user_name>] <name>[ <name>[ <name>]]"
 	},
@@ -162,7 +165,7 @@ var commands = {
 			} else {
 				data.members.splice(getRandomInt(0, data.members.length - 1), 0, member);
 			}
-			return [true, data, null];
+			return [true, data, getSeedLog(options, data)];
 		},
 		commandString: "<name>[ --first| --last| --random]"
 	},
@@ -183,6 +186,13 @@ var commands = {
 		},
 		"execute": function(options, data) {
 			var movingElem = data.members[options.claimIndex];
+			var characterName = movingElem.name;
+			if (options.date) {
+				var date = moment(options.date);	
+			} else {
+				var date = moment();
+			}
+			
 			for (var i = data.members.length - 1; i >= options.claimIndex; i--) {
 				if (data.members[i].status == "active") {
 					movingElem = data.members.splice(i, 1, movingElem)[0];
@@ -190,9 +200,9 @@ var commands = {
 				}
 			}
 			logger.debug(data);
-			return [true, data, null];
+			return [true, data, getClaimLog(options, data, characterName, date)];
 		},
-		commandString: "<name>[ --date=<date>][ --item=<item_id>]"
+		commandString: "<name>[ --date=<date>][ --item=<item_id>[ --normal][ --heroic][ --mythic]]"
 	}
 }
 
@@ -214,4 +224,42 @@ function getRandomInt(min, max) {
 
 function isAdmin(options, data) {
 	return data.admin.indexOf(options.currentUser) > -1;
+}
+
+function getInitLog(options, data) {
+	return {
+		fallback: "List Initialized with " + options.admin.join(', '),
+		pretext: "List Initialized",
+		text: "Admins are: " + options.admin.join(', '),
+	}
+}
+
+function getClaimLog(options, data, character, date) {
+	if (!options.wowItem) {
+		var baseText = character + " claimed an item";
+	} else {
+		var baseText = character + " claimed <" + options.wowItem.webUrl + "|" + options.wowItem.name + ">";
+	}
+	return {
+		fallback: baseText,
+		pretext: baseText,
+		text: "Claimed on " + date.format("YYYY/MM/DD"),
+	}
+}
+
+function getSeedLog(options, data) {
+	var characterName = options._[0].toLowerCase();
+	var text = characterName;
+	if (options.first) {
+		text += " was added to the top of the list.";
+	} else if (options.last) {
+		text += " was added to the end of the list.";
+	} else {
+		text += " was added randomly into the list.";
+	}
+	return {
+		fallback: "Character " + characterName + " added to list.",
+		pretext: "Character " + characterName + " added to list.",
+		text: text
+	}
 }

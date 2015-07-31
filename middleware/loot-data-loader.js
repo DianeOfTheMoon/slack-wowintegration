@@ -17,7 +17,17 @@ module.exports = {
 			redis.get(req.lootKey, function (err, data) {
 				//TODO what about when the data is corrupt?
 				req.lootData = JSON.parse(data);
-				next();
+
+				redis.lrange(req.lootKey + ".log", 0, 10, function(err, logData) {
+					if (logData != "") {
+						var logResult = [];
+						for (var i = 0; i < logData.length; i++) {
+							logResult.push(JSON.parse(logData[i]));
+						}
+						req.lootLog = logResult;
+					}
+					next();
+				});
 			});
 		} else {
 			next();
@@ -29,6 +39,17 @@ module.exports = {
 				if (err) {
 					next(err);
 				} else {
+					logger.debug("Looking for log data to save");
+					if (req.lootLogData) {
+						logger.debug("Found");
+						redis.lpush(req.lootKey + ".log", JSON.stringify(req.lootLogData), function (err, result) {
+							if (err) {
+								next(err);
+							} else {
+								next();
+							}
+						});
+					}
 					next();
 				}
 			});

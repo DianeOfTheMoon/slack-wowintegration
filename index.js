@@ -15,6 +15,7 @@ var wow_api_item_middleware = require('./middleware/wow-api-item');
 
 var loot_parse_middleware = require('./middleware/loot-parse');
 var loot_command_middleware = require('./middleware/loot-commands');
+var loot_display_middleware = require('./middleware/loot-display');
 var loot_data_middleware = require('./middleware/loot-data-loader');
 var item_format = require('./item-format');
 
@@ -30,6 +31,7 @@ app.use('/loot', loot_parse_middleware);
 app.use('/loot', wow_api_item_middleware);
 app.use('/loot', loot_data_middleware.loader);
 app.use('/loot', loot_command_middleware);
+app.use('/loot', loot_display_middleware);
 app.use('/loot', loot_data_middleware.saver);
 
 
@@ -38,7 +40,8 @@ app.get('/', function (req, resp) {
 });
 
 app.post('/loot', function(req, resp) {
-	resp.send("loot");
+	logger.debug("loot route");
+	resp.send("");
 });
 
 app.post('/item', function(req, resp) {
