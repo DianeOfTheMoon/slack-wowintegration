@@ -25,6 +25,8 @@ module.exports = function(req, resp, next) {
 				next();
 			}
 		});
+	} else {
+		next();
 	}
 }
 
