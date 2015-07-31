@@ -41,7 +41,7 @@ app.post('/item', function(req, resp) {
 			resp.send("Slack won't let me link the item for you.");
 		} else {
 			logger.debug("Sent webhook result");
-			resp.send("Linking " + req.wowItem.name + "...");
+			resp.send("");
 		}
 	});
 });
