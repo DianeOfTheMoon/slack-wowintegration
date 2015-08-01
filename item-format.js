@@ -27,6 +27,11 @@ module.exports = function (wowItem, respChannel) {
     overview.mrkdwn_in = ["text", "pretext"];
     
     overview.fallback = wowItem.name + wowItem.description; // Fallback Text
+    
+    if (wowItem.id === 19019) {
+        overview.pretext = "Did someone say...";
+    }
+    
     overview.title = wowItem.name; // Item Name
     if (wowItem.nameDescription) {
         overview.title += " (" + wowItem.nameDescription + ")";
