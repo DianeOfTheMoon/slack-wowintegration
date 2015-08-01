@@ -28,7 +28,9 @@ function parse_options(search_string) {
 			options.tier = 'raid-mythic';
 		} else if (raw_opt.slice(0, 5) === "--id=") {
 			options.id = raw_opt.substr(5);
-		}
+		} else if (raw_opt === '--anal') {
+            options.extras = raw_opt;
+        }
 	});
 
 	logger.debug(options);
