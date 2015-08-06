@@ -28,10 +28,10 @@ module.exports = function(req, resp, next) {
 					}
 				}
 			}
+			next();
 		} else {
-			resp.send("Usage: `" + req.body.command + " [" + commands.join(" ") + "] [options]`");
+			resp.send("Usage: `/" + req.body.command + " [" + commands.join(" ") + "] [options]`");
 		}
-		next();
 	} else {
 		next();
 	}
