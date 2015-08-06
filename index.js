@@ -56,7 +56,7 @@ app.post('/item', function(req, resp) {
 	//	channel: respChannel,
 	//	text: "<" + req.wowItem.webUrl + "|" + req.wowItem.name + ">"
 	//};
-    var params = item_format(req.wowItem, respChannel);
+    var params = item_format(req.wowItem, respChannel, req.wowSearch.options);
 
 	slack.webhook(params, function(err, response) {
 		if (err) {

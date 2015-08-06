@@ -6,9 +6,9 @@ var inventoryType = require('./libs/inventoryType.json');
 var itemClass = require('./libs/itemClass.json');
 var quality = require('./libs/quality.json');
 
-module.exports = function (wowItem, respChannel) {
+module.exports = function (wowItem, respChannel, options) {
     var imageURL = 'http://media.blizzard.com/wow/icons/56/';
-    
+
     var data = {};
     data.channel = respChannel;
     
@@ -27,9 +27,21 @@ module.exports = function (wowItem, respChannel) {
     overview.mrkdwn_in = ["text", "pretext"];
     
     overview.fallback = wowItem.name + wowItem.description; // Fallback Text
-    overview.title = wowItem.name; // Item Name
+    
+    if (wowItem.id === 19019) {
+        overview.pretext = "Did someone say...";
+    }
+    
+    if (options.extras === "--anal") {
+        overview.title = "Anal ";
+    } else {
+        overview.title = "";
+    }
+    
+    overview.title += wowItem.name; // Item Name
+    
     if (wowItem.nameDescription) {
-        overview.title += " (" + wowItem.nameDescription + ")";
+        overview.title += " (" + wowItem.nameDescription.trim() + ")"; // Item Tier
     }
     
     overview.title_link = wowItem.webUrl; // URL
@@ -50,7 +62,7 @@ module.exports = function (wowItem, respChannel) {
     overviewField2.value = inventoryType[wowItem.inventoryType].name; // Type/Slot
     overviewField2.short = true;
     
-    if (wowItem.itemClass === 4) {
+    if (wowItem.itemClass === 4 && wowItem.armor > 0) {
         overviewField3.title = "Armor";
         overviewField3.value = wowItem.armor; // Armor
         overviewField3.short = false;

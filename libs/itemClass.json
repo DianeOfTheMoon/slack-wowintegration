@@ -27,7 +27,8 @@
             "Mining Bag",
             "Leatherworking Bag",
             "Inscription Bag",
-            "Tackle Box"
+            "Tackle Box",
+            "Cooking Bag"
         ]
     },
     {
@@ -54,7 +55,8 @@
             "Spear",
             "Crossbow",
             "Wand",
-            "Fishing Pole"
+            "Fishing Pole",
+            "Ranged Weapon"
         ]
     },
     {
@@ -70,7 +72,7 @@
             "Meta",
             "Simple",
             "Prismatic",
-            "Hydraulic",
+            "Crystal of Fear",
             "Cogwheel"
         ]
     },
@@ -221,7 +223,22 @@
             "Shaman",
             "Mage",
             "Warlock",
+            "Monk",
             "Druid"
+        ]
+    },
+    {
+        "id": 17,
+        "name": "Battle Pets",
+        "subClass": [
+            "Battle Pet"
+        ]
+    },
+    {
+        "id": 18,
+        "name": "WoW Token",
+        "subClass": [
+            "WoW Token"
         ]
     }
 ]
