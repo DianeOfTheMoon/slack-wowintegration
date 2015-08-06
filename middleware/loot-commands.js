@@ -25,7 +25,6 @@ module.exports = function(req, resp, next) {
 				logger.silly("failed basic");
 				resp.send("Usage: " + req.body.command + " " + req.lootCommand + " " + commands[req.lootCommand].commandString);
 			}
-			next("err");
 		} else {
 			logger.silly("looks valid");
 			req.lootOptions.wowItem = req.wowItem;
@@ -213,7 +212,7 @@ var commands = {
 				}
 			}
 			logger.debug(data);
-			return [true, data, getClaimLog(options, data, characterName, date), "Claim has been processed"];
+			return [true, data, getClaimLog(options, data, characterName, date), "Claim has been processed for " + characterName];
 		},
 		commandString: "<name>[ --date=<date>][ --item=<item_id>[ --normal][ --heroic][ --mythic]]"
 	}
