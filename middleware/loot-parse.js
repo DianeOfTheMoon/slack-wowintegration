@@ -32,5 +32,7 @@ module.exports = function(req, resp, next) {
 			resp.send("Usage: `" + req.body.command + " [" + commands.join(" ") + "] [options]`");
 		}
 		next();
+	} else {
+		next();
 	}
 }
