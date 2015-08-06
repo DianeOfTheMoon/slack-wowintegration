@@ -3,8 +3,6 @@ var app = express();
 var bodyParser = require('body-parser');
 
 var Slack = require('slack-node');
-slack = new Slack();
-slack.setWebhook(process.env.WEBHOOK || "__hook_not_defined__");
 
 var logger = require('winston');
 logger.level = process.env.LOG_LEVEL || 'debug';
@@ -57,6 +55,8 @@ app.post('/item', function(req, resp) {
 	//	text: "<" + req.wowItem.webUrl + "|" + req.wowItem.name + ">"
 	//};
     var params = item_format(req.wowItem, respChannel, req.wowSearch.options);
+    var slack = new Slack();
+	slack.setWebhook(process.env.WEBHOOK || "__hook_not_defined__");
 
 	slack.webhook(params, function(err, response) {
 		if (err) {

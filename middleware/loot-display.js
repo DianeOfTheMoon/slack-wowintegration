@@ -1,9 +1,9 @@
 var Slack = require('slack-node');
-slack = new Slack();
-slack.setWebhook(process.env.LOOT_WEBHOOK || "__hook_not_defined__");
 var logger = require('winston');
 
 module.exports = function(req, resp, next) {
+	var slack = new Slack();
+	slack.setWebhook(process.env.LOOT_WEBHOOK || "__hook_not_defined__");
 	logger.debug("checking for display: " + req.lootCommand);
 	if (req.lootCommand && req.lootCommand == "display") {
 		logger.debug(req.lootData.members);
