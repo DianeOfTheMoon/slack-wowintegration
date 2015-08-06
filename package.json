@@ -4,7 +4,8 @@
   "description": "Slack Integration to display a wow item",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "mocha tests/*.js"
   },
   "author": "",
   "license": "ISC",
@@ -21,5 +22,12 @@
   },
   "engines": {
     "node": "0.12.x"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "chai-as-promised": "^5.1.0",
+    "mocha": "^2.2.5",
+    "sinon": "^1.15.4",
+    "sinon-chai": "^2.8.0"
   }
 }
