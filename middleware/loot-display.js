@@ -1,7 +1,13 @@
 var Slack = require('slack-node');
 var logger = require('winston');
 
-module.exports = {
+var lootDisplay = {
+	sendData: function(params, callback) {
+		var slack = new Slack();
+		logger.silly(params);
+		slack.setWebhook(process.env.LOOT_WEBHOOK || "__hook_not_defined__");
+		slack.webhook(params, callback);
+	},
 	middleware: function(req, resp, next) {
 		logger.debug("checking for display: " + req.lootCommand);
 		if (req.lootCommand && req.lootCommand == "display") {
@@ -22,7 +28,7 @@ module.exports = {
 				attachments: attachments
 			};
 
-			this.sendData(params, function(err, response) {
+			lootDisplay.sendData(params, function(err, response) {
 				logger.silly('sent display');
 				if (err) {
 					logger.info(err, response);
@@ -34,14 +40,10 @@ module.exports = {
 		} else {
 			next();
 		}
-	},
-	sendData: function(params, callback) {
-		var slack = new Slack();
-		logger.silly(params);
-		slack.setWebhook(process.env.LOOT_WEBHOOK || "__hook_not_defined__");
-		slack.webhook(params, callback);
 	}
 };
+
+module.exports = lootDisplay;
 
 function getListData(members, activeOnly) {
 	var data = "";
