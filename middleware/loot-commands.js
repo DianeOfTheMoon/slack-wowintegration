@@ -86,16 +86,19 @@ var commands = {
 			if (!isAdmin(options, data)) {
 				return "You do not have permission to manage this loot list";
 			}
-			for (var i = 0; i < data.members.length; i++) {
-				if (data.members[i].name == options._[0].toLowerCase()) {
-					if (data.members[i].status == "inactive") {
-						return true;
-					} else {
-						return "That user is already active";
+			for (var i = 0; i < options._.length; i++) {
+				var found = false;
+				for (var j = 0; j < data.members.length; j++) {
+					if (data.members[j].name == options._[i].toLowerCase()) {
+						found = true;
+						break;
 					}
 				}
+				if (!found) {
+					return options._[i].toLowerCase() + " was not found in the list";
+				}
 			}
-			return false;
+			return true;
 		},
 		"execute": function(options, data) {
 			var membernameList = [];
@@ -109,9 +112,29 @@ var commands = {
 					}
 				}
 			}
+
+			if (options['active-only'] == true) {
+				logger.silly('deactivating others to ' + membernameList.join(', '));
+				for (var i = 0; i < data.members.length; i++) {
+					var found = false;
+					logger.silly('looking at ' + data.members[i].name);
+					for(var j = 0; j < membernameList.length; j++) {
+						logger.silly('comparing to ' + membernameList[j]);
+						if (data.members[i].name == membernameList[j]) {
+							logger.silly('found');
+							found = true;
+							break;
+						}
+					}
+					if(!found) {
+						logger.silly('deactivating');
+						data.members[i].status = 'inactive';
+					}
+				}
+			}
 			return [true, data, null, membernameList.join(", ") + " has been activated"];
 		},
-		commandString: "<name>[ <name>[ <name>]]"
+		commandString: "<name>[ <name>[ <name>]] [--active-only]"
 	},
 	"deactivate": {
 		"validate": function(options, data) {
