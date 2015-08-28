@@ -211,10 +211,12 @@ var commands = {
 				return "You do not have permission to manage this loot list";
 			}
 			for (var i = 0; i < data.members.length; i++) {
-				logger.debug(data.members[i], searchName);
-				if (data.members[i].name == searchName) {
-					options.claimIndex = i;
-					return true;
+				for (var j = 0; j < options._.length; j++) {
+					var searchName = options._[j].toLowerCase();
+					if (data.members[i].name == searchName) {
+						options.claimIndex = i;
+						return true;
+					}
 				}
 			}
 			return false;

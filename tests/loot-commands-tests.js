@@ -9,7 +9,7 @@ describe('Loot Commands', function() {
 
 	describe('claim action', function() {
 		it('should provide username on successful claim', function(done) {
-			var req = defaultReq;
+			var req = JSON.parse(JSON.stringify(defaultReq));
 			req.lootCommand = 'claim';
 			var resp = {
 				send: function(text) {
@@ -22,11 +22,32 @@ describe('Loot Commands', function() {
 			});
 
 		});
+
+		it('should process highest active claim member', function(done) {
+			var req = JSON.parse(JSON.stringify(defaultReq));
+			req.lootCommand = 'claim';
+			req.lootOptions._ = ['qux', 'test'];
+			req.lootData.members.unshift({
+				name: 'test',
+				status: 'active'
+			});
+			var resp = {
+				send: function(text) {
+					throw Error("Next should have been called.");
+				}
+			};
+
+			test(req, resp, function() {
+				req.sendResponse.should.equal('Claim has been processed for test');
+				req.lootData.members[0].name.should.equal('foo');
+				done();
+			});
+		});
 	});
 
 	describe('activate action', function() {
 		it('should activate users', function(done) {
-			var req = defaultReq;
+			var req = JSON.parse(JSON.stringify(defaultReq));
 			req.lootCommand = 'activate';
 			req.lootOptions['_'].push('baz');
 
@@ -46,7 +67,7 @@ describe('Loot Commands', function() {
 		});
 
 		it('should deactivate users not set with --active-only option', function(done) {
-			var req = defaultReq;
+			var req = JSON.parse(JSON.stringify(defaultReq));
 			req.lootCommand = 'activate';
 			req.lootOptions['_'].push('baz');
 			req.lootOptions['active-only'] = true;
@@ -69,7 +90,7 @@ describe('Loot Commands', function() {
 		});
 
 		it('should return message if any user is not found', function(done) {
-			var req = defaultReq;
+			var req = JSON.parse(JSON.stringify(defaultReq));
 			req.lootCommand = 'activate';
 			req.lootOptions['_'].push('test');
 			var resp = {
@@ -83,8 +104,8 @@ describe('Loot Commands', function() {
 			});
 		});
 
-		it('should not allow activation if current user is not an admin', function(done) {
-			var req = defaultReq;
+		it('should return message if current user is not an admin', function(done) {
+			var req = JSON.parse(JSON.stringify(defaultReq));
 			req.lootCommand = 'activate';
 			req.lootOptions.currentUser = 'foo';
 			var resp = {
